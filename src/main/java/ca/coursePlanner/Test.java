@@ -1,16 +1,27 @@
 package ca.coursePlanner;
 
 import ca.coursePlanner.model.CSVReader;
+import ca.coursePlanner.model.CourseData;
+import ca.coursePlanner.model.CourseDataManager;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class Test {
 
     public static void main(String[] args) {
-        String test = "1234";
-        String s1 = test.substring(0, 3);
-        String s2 = test.substring(3);
-        System.out.println(s1);
-        System.out.println(s2);
+        CSVReader cvs = new CSVReader();
+        ArrayList<String> csvTest = cvs.getCvsList();
+
+//        for (String s : csvTest) {
+//            System.out.println(s);
+//        }
+
+        CourseDataManager courseDataManager = new CourseDataManager();
+        Hashtable<String, ArrayList<CourseData>> hashTest = courseDataManager.getCourses();
+        for (String key : hashTest.keySet()) {
+            System.out.println(key + " = " + hashTest.get(key));
+            System.out.println();
+        }
     }
 }

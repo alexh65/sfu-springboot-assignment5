@@ -1,6 +1,6 @@
 package ca.coursePlanner.model;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Class stores information on a single course.
@@ -12,11 +12,11 @@ public class CourseData {
     private String location;
     private int enrollmentCapacity;
     private int enrollmentTotal;
-    private ArrayList<String> instructors;
+    private String[] instructors;
     private String componentCode;
 
     public CourseData(Semester semester, String subject, String catalogNumber, String location, int enrollmentCapacity,
-                      int enrollmentTotal, ArrayList<String> instructors, String componentCode) {
+                      int enrollmentTotal, String[] instructors, String componentCode) {
         this.semester = semester;
         this.subject = subject;
         this.catalogNumber = catalogNumber;
@@ -51,11 +51,20 @@ public class CourseData {
         return enrollmentTotal;
     }
 
-    public ArrayList<String> getInstructors() {
+    public String[] getInstructors() {
         return instructors;
     }
 
     public String getComponentCode() {
         return componentCode;
+    }
+
+    @Override
+    public String toString() {
+        return "CourseData{" +
+                "subject='" + subject + '\'' +
+                ", catalogNumber='" + catalogNumber + '\'' +
+                ", instructors=" + Arrays.toString(instructors) +
+                '}';
     }
 }
