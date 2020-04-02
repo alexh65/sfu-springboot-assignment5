@@ -7,18 +7,20 @@ import java.util.Hashtable;
  * Class parses the csv ArrayList into a hashtable, where the key is the catalog number and the element is an
  * an ArrayList of CourseData corresponding to the catalog number.
  */
-public class CourseDataManager {
+public class CSVParser {
     private Hashtable<String, ArrayList<CourseData>> courses = new Hashtable<>();
     //Regex from: https://stackoverflow.com/questions/18893390/splitting-on-comma-outside-quotes
     private final String SPLIT_BY = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
     private final String EXIT_CODE = "exit application";
 
-    public CourseDataManager() {
+    public CSVParser() {
         CSVReader reader = new CSVReader();
         ArrayList<String> csvList = reader.getCvsList();
 
         if (!csvList.get(0).equals(EXIT_CODE)) {
             parseCSVList(csvList);
+        } else {
+            courses = null;
         }
     }
 

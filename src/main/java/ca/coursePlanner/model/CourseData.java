@@ -27,6 +27,22 @@ public class CourseData {
         this.componentCode = componentCode;
     }
 
+    public String stringInstructors() {
+        String joinedList = instructors[0];
+        for (int i = 1; i < instructors.length; i++) {
+            joinedList += ", " + instructors[i];
+        }
+        return joinedList;
+    }
+
+    public String toStringFirstLine() {
+        return "" + semester + " in " + location + " by " + stringInstructors();
+    }
+
+    public String toStringSecondLine() {
+        return "Type=" + componentCode + ", Enrollment=" + enrollmentTotal + "/" + enrollmentCapacity;
+    }
+
     public Semester getSemester() {
         return semester;
     }
@@ -57,14 +73,5 @@ public class CourseData {
 
     public String getComponentCode() {
         return componentCode;
-    }
-
-    @Override
-    public String toString() {
-        return "CourseData{" +
-                "subject='" + subject + '\'' +
-                ", catalogNumber='" + catalogNumber + '\'' +
-                ", instructors=" + Arrays.toString(instructors) +
-                '}';
     }
 }

@@ -19,4 +19,9 @@ public class Semester {
     public int getSemester() {
         return semester;
     }
+
+    @Override
+    public String toString() {
+        return "" + year + semester;
+    }
 }
