@@ -1,6 +1,7 @@
 package ca.coursePlanner.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Hashtable;
 
 /**
@@ -9,6 +10,7 @@ import java.util.Hashtable;
  */
 public class CSVParser {
     private Hashtable<String, ArrayList<CourseData>> courses = new Hashtable<>();
+    private Hashtable<String, ArrayList<CourseData>> coursesAndNumber = new Hashtable<>();
     //Regex from: https://stackoverflow.com/questions/18893390/splitting-on-comma-outside-quotes
     private final String SPLIT_BY = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
     private final String EXIT_CODE = "exit application";
@@ -19,9 +21,22 @@ public class CSVParser {
 
         if (!csvList.get(0).equals(EXIT_CODE)) {
             parseCSVList(csvList);
+            sortCourses();
         } else {
             courses = null;
         }
+    }
+
+    private void sortCourses() {
+        for (String key : courses.keySet()) {
+            ArrayList<CourseData> newElement = courses.get(key);
+            Collections.sort(newElement);
+            courses.replace(key, courses.get(key), newElement);
+        }
+    }
+
+    private void fillCoursesAndNumber() {
+
     }
 
     private void parseCSVList(ArrayList<String> csvList) {
@@ -60,4 +75,6 @@ public class CSVParser {
     public Hashtable<String, ArrayList<CourseData>> getCourses() {
         return courses;
     }
+
+
 }

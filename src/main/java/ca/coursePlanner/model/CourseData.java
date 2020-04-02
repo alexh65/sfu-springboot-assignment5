@@ -5,7 +5,7 @@ import java.util.Arrays;
 /**
  * Class stores information on a single course.
  */
-public class CourseData {
+public class CourseData implements Comparable{
     private Semester semester;
     private String subject;
     private String catalogNumber;
@@ -73,5 +73,13 @@ public class CourseData {
 
     public String getComponentCode() {
         return componentCode;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        int currentCatalogNumber = Integer.parseInt(this.catalogNumber.substring(0, 3));
+        int compareCatalogNumber = Integer.parseInt(((CourseData)o).catalogNumber.substring(0, 3));
+
+        return currentCatalogNumber - compareCatalogNumber;
     }
 }
