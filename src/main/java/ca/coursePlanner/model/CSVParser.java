@@ -22,6 +22,7 @@ public class CSVParser {
         if (!csvList.get(0).equals(EXIT_CODE)) {
             parseCSVList(csvList);
             sortCourses();
+            fillCoursesAndNumber();
         } else {
             courses = null;
         }
@@ -36,7 +37,19 @@ public class CSVParser {
     }
 
     private void fillCoursesAndNumber() {
-
+        for (String key : courses.keySet()) {
+            ArrayList<CourseData> currentElement = courses.get(key);
+            for (CourseData courseData : currentElement) {
+                String currentKey = key + " " + courseData.getCatalogNumber();
+                if (coursesAndNumber.containsKey(currentKey)) {
+                    coursesAndNumber.get(currentKey).add(courseData);
+                } else {
+                    ArrayList<CourseData> courseList = new ArrayList<>();
+                    courseList.add(courseData);
+                    coursesAndNumber.put(currentKey, courseList);
+                }
+            }
+        }
     }
 
     private void parseCSVList(ArrayList<String> csvList) {
@@ -76,5 +89,7 @@ public class CSVParser {
         return courses;
     }
 
-
+    public Hashtable<String, ArrayList<CourseData>> getCoursesAndNumber() {
+        return coursesAndNumber;
+    }
 }

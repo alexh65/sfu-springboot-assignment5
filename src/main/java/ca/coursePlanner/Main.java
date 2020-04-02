@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
         CSVParser CSVParser = new CSVParser();
-        Hashtable<String, ArrayList<CourseData>> courseHashTable = CSVParser.getCourses();
+        Hashtable<String, ArrayList<CourseData>> courseHashTable = CSVParser.getCoursesAndNumber();
 
         if (courseHashTable == null) {
             return;
