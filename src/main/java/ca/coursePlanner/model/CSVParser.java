@@ -82,6 +82,10 @@ public class CSVParser {
     }
 
     private String[] separateInstructors(String instructors) {
+        if(instructors.equals("<null>")){
+            String[] temp = {""};
+            return temp;
+        }
         return instructors.split(",");
     }
 
