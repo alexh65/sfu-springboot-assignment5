@@ -23,4 +23,5 @@ repositories {
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
+    implementation 'org.jetbrains:annotations:15.0'
 }
