@@ -36,8 +36,12 @@ public class CourseData implements Comparable{
     }
 
     public String toStringFirstLine() {
-        return "" + semester + " in " + location + " by " + stringInstructors();
+        return "TEST : " + subject + " " + catalogNumber + "    " + semester + " in " + location + " by " + stringInstructors();
     }
+
+//    public String toStringFirstLine() {
+//        return "" + semester + " in " + location + " by " + stringInstructors();
+//    }
 
     public String toStringSecondLine() {
         return "Type=" + componentCode + ", Enrollment=" + enrollmentTotal + "/" + enrollmentCapacity;

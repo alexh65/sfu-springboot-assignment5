@@ -40,7 +40,7 @@ public class CSVParser {
         for (String key : courses.keySet()) {
             ArrayList<CourseData> currentElement = courses.get(key);
             for (CourseData courseData : currentElement) {
-                String currentKey = key + " " + courseData.getCatalogNumber();
+                String currentKey = (key + " " + courseData.getCatalogNumber()).trim();
                 if (coursesAndNumber.containsKey(currentKey)) {
                     coursesAndNumber.get(currentKey).add(courseData);
                 } else {
@@ -83,8 +83,7 @@ public class CSVParser {
 
     private String[] separateInstructors(String instructors) {
         if(instructors.equals("<null>")){
-            String[] temp = {""};
-            return temp;
+            return new String[]{""};
         }
         return instructors.split(",");
     }

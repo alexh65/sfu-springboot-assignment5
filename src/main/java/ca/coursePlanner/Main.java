@@ -15,12 +15,6 @@ public class Main {
         if (courseHashTable == null) {
             return;
         } else {
-//
-//            for (String key : courseHashTable.keySet()) {
-//                System.out.println(key + " = " + courseHashTable.get(key));
-//                System.out.println();
-//            }
-
             printCourses(courseHashTable);
         }
     }
