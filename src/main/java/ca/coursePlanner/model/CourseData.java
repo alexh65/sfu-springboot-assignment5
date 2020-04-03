@@ -1,7 +1,5 @@
 package ca.coursePlanner.model;
 
-import java.util.Arrays;
-
 /**
  * Class stores information on a single course.
  */
@@ -27,6 +25,10 @@ public class CourseData implements Comparable{
         this.componentCode = componentCode;
     }
 
+    public String toStringFirstLine() {
+        return "" + semester + " in " + location + " by " + stringInstructors();
+    }
+
     public String stringInstructors() {
         String joinedList = instructors[0];
         for (int i = 1; i < instructors.length; i++) {
@@ -34,14 +36,6 @@ public class CourseData implements Comparable{
         }
         return joinedList;
     }
-
-    public String toStringFirstLine() {
-        return "TEST : " + subject + " " + catalogNumber + "    " + semester + " in " + location + " by " + stringInstructors();
-    }
-
-//    public String toStringFirstLine() {
-//        return "" + semester + " in " + location + " by " + stringInstructors();
-//    }
 
     public String toStringSecondLine() {
         return "Type=" + componentCode + ", Enrollment=" + enrollmentTotal + "/" + enrollmentCapacity;
@@ -93,25 +87,20 @@ public class CourseData implements Comparable{
     public int compareTo(Object o) {
 
         StringBuilder currentBuilder = new StringBuilder();
-//        System.out.println("this.catalogNumber = " + this.catalogNumber);
         for (int i = 0; i < this.catalogNumber.length(); i++) {
             if (isNumeric(this.catalogNumber.charAt(i))) {
                 currentBuilder.append(this.catalogNumber.charAt(i));
             }
         }
         int currentCatalogNumber = Integer.parseInt(currentBuilder.toString());
-//        System.out.println("int this = " + currentCatalogNumber);
 
         StringBuilder compareBuilder = new StringBuilder();
-//        System.out.println("(CourseData)o).catalogNumber = " + ((CourseData)o).catalogNumber);
         for (int i = 0; i < ((CourseData)o).catalogNumber.length(); i++) {
             if (isNumeric(((CourseData)o).catalogNumber.charAt(i))) {
                 compareBuilder.append(((CourseData)o).catalogNumber.charAt(i));
             }
         }
-
         int compareCatalogNumber = Integer.parseInt(compareBuilder.toString());
-//        System.out.println("compare = " + compareCatalogNumber);
 
         return currentCatalogNumber - compareCatalogNumber;
     }
