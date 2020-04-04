@@ -25,7 +25,7 @@ public class CSVReader {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(fileInputStream, StandardCharsets.UTF_8));
 
                 String headerLine = reader.readLine();
-                String currentLine = "";
+                String currentLine;
 
                 while ((currentLine = reader.readLine()) != null){
                     csvList.add(currentLine);

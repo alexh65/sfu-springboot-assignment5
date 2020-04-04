@@ -20,6 +20,7 @@ public class AboutController {
         result.put("authorName", "Riya Dhariwal and Alex Hoang");
         return result;
     }
+
     @GetMapping("/api/dump-model")
     public void modelDump(){
         final String TAB = "    ";
@@ -35,6 +36,4 @@ public class AboutController {
             }
         }
     }
-
-
 }
