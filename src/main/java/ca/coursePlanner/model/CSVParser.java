@@ -1,8 +1,7 @@
 package ca.coursePlanner.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Hashtable;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Class parses the csv ArrayList into a hashtable, where the key is the catalog number and the element is an
@@ -11,10 +10,15 @@ import java.util.Hashtable;
 public class CSVParser {
     private Hashtable<String, ArrayList<CourseData>> courses = new Hashtable<>();
     private Hashtable<String, ArrayList<CourseData>> coursesAndNumber = new Hashtable<>();
+    private ArrayList<Department> departments = new ArrayList<>();
+
+    AtomicInteger departmentId = new AtomicInteger(1);
+    AtomicInteger courseId = new AtomicInteger(1);
+
     //Regex from: https://stackoverflow.com/questions/18893390/splitting-on-comma-outside-quotes
     private final String SPLIT_BY = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
     private final String EXIT_CODE = "exit application";
-
+    
     public CSVParser() {
         CSVReader reader = new CSVReader();
         ArrayList<String> csvList = reader.getCvsList();
@@ -22,9 +26,18 @@ public class CSVParser {
         if (!csvList.get(0).equals(EXIT_CODE)) {
             parseCSVList(csvList);
             sortCourses();
+            sortCourseInDepartments();
             fillCoursesAndNumber();
+            Collections.sort(departments);
         } else {
             courses = null;
+            departments = null;
+        }
+    }
+
+    private void sortCourseInDepartments() {
+        for(Department d: departments){
+            d.sortCourses();
         }
     }
 
@@ -55,11 +68,11 @@ public class CSVParser {
     private void parseCSVList(ArrayList<String> csvList) {
         for (String line : csvList) {
             String[] splitLine = line.split(SPLIT_BY);
-            addLineToHashTable(splitLine);
+            formatObjects(splitLine);
         }
     }
 
-    private void addLineToHashTable(String[] splitLine) {
+    private void formatObjects(String[] splitLine) {
         Semester semester = new Semester(splitLine[0]);
         String subject = splitLine[1].trim();
         String catalogNumber = splitLine[2].trim();
@@ -69,6 +82,29 @@ public class CSVParser {
         String[] instructors = separateInstructors(splitLine[6].trim());
         String componentCode = splitLine[7].trim();
 
+        Department department = null;
+        if (!hasSubject(subject)){
+            department = new Department(departmentId.getAndIncrement(), subject);
+            departments.add(department);
+        } else {
+            long index = findIndex(subject);
+            if(index == -1){
+                System.exit(-1);
+            } else {
+                department = departments.get((int)index);
+            }
+        }
+
+        Course course = null;
+        if (!department.hasCourse(catalogNumber)) {
+            course = new Course(courseId.getAndIncrement(), catalogNumber);
+            department.addCourse(course);
+        } else {
+            course = department.getCourse(catalogNumber);
+        }
+        course.addOffering(new Offering(semester, location, enrollmentCapacity, componentCode, enrollmentTotal, instructors));
+
+        //For dump-model
         CourseData courseData = new CourseData(semester, subject, catalogNumber, location, enrollmentCapacity,
                 enrollmentTotal, instructors, componentCode);
 
@@ -79,6 +115,26 @@ public class CSVParser {
             courseList.add(courseData);
             courses.put(subject, courseList);
         }
+
+    }
+
+    private boolean hasSubject(String subject) {
+        for(Department d: departments){
+            String existed = d.getName();
+            if (existed.equals(subject)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public long findIndex(String subject) {
+        for(int i = 0; i < departments.size(); i++){
+            if(departments.get(i).getName().equals(subject)){
+                return i;
+            }
+        }
+        return -1;
     }
 
     private String[] separateInstructors(String instructors) {
@@ -88,11 +144,12 @@ public class CSVParser {
         return instructors.split(",");
     }
 
-    public Hashtable<String, ArrayList<CourseData>> getCourses() {
-        return courses;
-    }
 
     public Hashtable<String, ArrayList<CourseData>> getCoursesAndNumber() {
         return coursesAndNumber;
     }
+    public ArrayList<Department> getDepartments() {
+        return departments;
+    }
+
 }

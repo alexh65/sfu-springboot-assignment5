@@ -7,10 +7,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Map;
 
 @RestController
-public class TestModelController {
+public class AboutController {
     Hashtable<String, ArrayList<CourseData>> coursesAndNumber = new CSVParser().getCoursesAndNumber();
+
+    @GetMapping("/api/about")
+    public Map<String, String> about(){
+        Hashtable<String, String> result = new Hashtable<>();
+        result.put("appName", "Awesome Course Planner");
+        result.put("authorName", "Riya Dhariwal and Alex Hoang");
+        return result;
+    }
 
     @GetMapping("/api/dump-model")
     public void modelDump(){
