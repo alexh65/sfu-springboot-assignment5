@@ -43,7 +43,7 @@ public class CourseController {
         ArrayList<ApiCourseOfferingWrapper> result = new ArrayList<>();
         Course course = departments.get((int) findIndexOfDepartment(deptId)).getCourseById(courseId);
         ArrayList<Offering> offerings = course.getOfferings();
-        for(Offering o: offerings){
+        for(Offering o : offerings){
             result.add(ApiCourseOfferingWrapper.getCourseOfferingWrapper(o));
         }
         return result;
