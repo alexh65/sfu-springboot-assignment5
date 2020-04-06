@@ -22,21 +22,26 @@ public class Department implements Comparable<Department>{
         return name;
     }
 
-    public Course getCourse(String catalogNumber) {
-        return courses.get(findIndex(catalogNumber));
+    public Course getCourseByCatalogNumber(String catalogNumber) {
+        for(int i = 0; i < courses.size(); i++){
+            if(courses.get(i).getCatalogNumber().equals(catalogNumber)){
+                return courses.get(i);
+            }
+        }
+        return null;
+    }
+
+    public Course getCourseById(long id) {
+        for(int i = 0; i < courses.size(); i++){
+            if(courses.get(i).getId() == id){
+                return courses.get(i);
+            }
+        }
+        return null;
     }
 
     public ArrayList<Course> getCourses() {
         return courses;
-    }
-
-    private int findIndex(String catalogNumber) {
-        for(int i = 0; i < courses.size(); i++){
-            if(courses.get(i).getCatalogNumber().equals(catalogNumber)){
-                return i;
-            }
-        }
-        return -1;
     }
 
     public void addCourse(Course course){

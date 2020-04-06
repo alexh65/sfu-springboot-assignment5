@@ -14,6 +14,7 @@ public class CSVParser {
 
     AtomicInteger departmentId = new AtomicInteger(1);
     AtomicInteger courseId = new AtomicInteger(1);
+    AtomicInteger offeringId = new AtomicInteger(1);
 
     //Regex from: https://stackoverflow.com/questions/18893390/splitting-on-comma-outside-quotes
     private final String SPLIT_BY = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
@@ -100,9 +101,10 @@ public class CSVParser {
             course = new Course(courseId.getAndIncrement(), catalogNumber);
             department.addCourse(course);
         } else {
-            course = department.getCourse(catalogNumber);
+            course = department.getCourseByCatalogNumber(catalogNumber);
         }
-        course.addOffering(new Offering(semester, location, enrollmentCapacity, componentCode, enrollmentTotal, instructors));
+        course.addOffering(new Offering(offeringId.getAndIncrement(), semester, location, enrollmentCapacity,
+                componentCode, enrollmentTotal, instructors, splitLine[6].trim()));
 
         //For dump-model
         CourseData courseData = new CourseData(semester, subject, catalogNumber, location, enrollmentCapacity,
