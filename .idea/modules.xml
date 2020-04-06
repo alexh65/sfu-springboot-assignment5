@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/cmpt213-a5.iml" filepath="$PROJECT_DIR$/.idea/cmpt213-a5.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/cmpt213-a5.main.iml" filepath="$PROJECT_DIR$/.idea/modules/cmpt213-a5.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/public/cmpt213-a5.public.iml" filepath="$PROJECT_DIR$/.idea/modules/public/cmpt213-a5.public.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/cmpt213-a5.test.iml" filepath="$PROJECT_DIR$/.idea/modules/cmpt213-a5.test.iml" />
+    </modules>
+  </component>
+</project>

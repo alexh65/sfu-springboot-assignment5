@@ -47,6 +47,7 @@ public class CourseController {
         for(Offering o : offerings){
             result.add(ApiCourseOfferingWrapper.getCourseOfferingWrapper(o));
         }
+        Collections.sort(result);
         return result;
     }
 
