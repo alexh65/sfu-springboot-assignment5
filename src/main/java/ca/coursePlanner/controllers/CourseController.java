@@ -7,6 +7,7 @@ import ca.coursePlanner.model.Offering;
 import ca.coursePlanner.wrappers.ApiCourseOfferingWrapper;
 import ca.coursePlanner.wrappers.ApiCourseWrapper;
 import ca.coursePlanner.wrappers.ApiDepartmentWrapper;
+import ca.coursePlanner.wrappers.ApiOfferingSectionWrapper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,10 +44,25 @@ public class CourseController {
         ArrayList<ApiCourseOfferingWrapper> result = new ArrayList<>();
         Course course = departments.get((int) findIndexOfDepartment(deptId)).getCourseById(courseId);
         ArrayList<Offering> offerings = course.getOfferings();
-        for(Offering o: offerings){
+        for(Offering o : offerings){
             result.add(ApiCourseOfferingWrapper.getCourseOfferingWrapper(o));
         }
         Collections.sort(result);
+        return result;
+    }
+
+    @GetMapping("/api/departments/{deptId}/courses/{courseId}/offerings/{offeringId}")
+    public ArrayList<ApiOfferingSectionWrapper> getSections(@PathVariable("deptId") long deptId,
+                                                            @PathVariable("courseId") long courseId,
+                                                            @PathVariable("offeringId") long offeringId){
+        ArrayList<ApiOfferingSectionWrapper> result = new ArrayList<>();
+        Course course = departments.get((int) findIndexOfDepartment(deptId)).getCourseById(courseId);
+        ArrayList<Offering> offerings = course.getOfferings();
+        for(Offering o : offerings){
+            if (o.getCourseOfferingId() == offeringId) {
+                result.add(ApiOfferingSectionWrapper.getOfferingSectionWrapper(o));
+            }
+        }
         return result;
     }
 
