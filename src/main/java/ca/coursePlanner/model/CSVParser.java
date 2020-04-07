@@ -83,6 +83,24 @@ public class CSVParser {
         String[] instructors = separateInstructors(splitLine[6].trim());
         String componentCode = splitLine[7].trim();
 
+        addToObjects(new Offering(offeringId.getAndIncrement(), semester, location, enrollmentCapacity,
+                componentCode, enrollmentTotal, instructors, splitLine[6].trim()), subject, catalogNumber);
+
+        //For dump-model
+        CourseData courseData = new CourseData(semester, subject, catalogNumber, location, enrollmentCapacity,
+                enrollmentTotal, instructors, componentCode);
+
+        if (courses.containsKey(subject)) {
+            courses.get(subject).add(courseData);
+        } else {
+            ArrayList<CourseData> courseList = new ArrayList<>();
+            courseList.add(courseData);
+            courses.put(subject, courseList);
+        }
+
+    }
+
+    public void addToObjects(Offering offering, String subject, String catalogNumber) {
         Department department = null;
         if (!hasSubject(subject)){
             department = new Department(departmentId.getAndIncrement(), subject);
@@ -103,21 +121,7 @@ public class CSVParser {
         } else {
             course = department.getCourseByCatalogNumber(catalogNumber);
         }
-        course.addOffering(new Offering(offeringId.getAndIncrement(), semester, location, enrollmentCapacity,
-                componentCode, enrollmentTotal, instructors, splitLine[6].trim()));
-
-        //For dump-model
-        CourseData courseData = new CourseData(semester, subject, catalogNumber, location, enrollmentCapacity,
-                enrollmentTotal, instructors, componentCode);
-
-        if (courses.containsKey(subject)) {
-            courses.get(subject).add(courseData);
-        } else {
-            ArrayList<CourseData> courseList = new ArrayList<>();
-            courseList.add(courseData);
-            courses.put(subject, courseList);
-        }
-
+        course.addOffering(offering);
     }
 
     private boolean hasSubject(String subject) {

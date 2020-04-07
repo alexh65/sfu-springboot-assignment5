@@ -93,16 +93,7 @@ public class CourseController {
         Offering offering = new Offering(nextOfferingId.incrementAndGet(), new Semester(wrapper.semester), wrapper.location,
                 wrapper.enrollmentCap, wrapper.component, wrapper.enrollmentTotal, instructors, wrapper.instructor);
 
-        System.out.println(offering);
-        Course course = new Course(nextCourseId.incrementAndGet(), wrapper.catalogNumber);
-//        course.addOffering(offering);
-
-        Department department = new Department(nextDepartmentId.incrementAndGet(), wrapper.subjectName);
-        department.addCourse(course);
-//        System.out.println(course);
-
-        departments.add(department);
-//        System.out.println(department);
+        csvParser.addToObjects(offering, wrapper.subjectName, wrapper.catalogNumber);
     }
 
 

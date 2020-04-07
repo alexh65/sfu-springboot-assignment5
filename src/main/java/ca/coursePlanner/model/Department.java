@@ -31,6 +31,16 @@ public class Department implements Comparable<Department>{
         return null;
     }
 
+    public int findCourse(String catalog) {
+        for (int i = 0; i < courses.size(); i++) {
+            String existed = courses.get(i).getCatalogNumber();
+            if (existed.equals(catalog)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public Course getCourseById(long id) {
         for (Course course : courses) {
             if (course.getId() == id) {
