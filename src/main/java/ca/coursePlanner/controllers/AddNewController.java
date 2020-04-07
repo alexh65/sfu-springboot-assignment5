@@ -3,7 +3,6 @@ package ca.coursePlanner.controllers;
 import ca.coursePlanner.model.Course;
 import ca.coursePlanner.model.Department;
 import ca.coursePlanner.model.Offering;
-import ca.coursePlanner.model.Semester;
 import ca.coursePlanner.wrappers.ApiOfferingDataWrapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;

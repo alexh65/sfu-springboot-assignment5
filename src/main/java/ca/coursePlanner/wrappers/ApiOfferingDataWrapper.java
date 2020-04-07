@@ -1,7 +1,6 @@
 package ca.coursePlanner.wrappers;
 
 import ca.coursePlanner.model.CourseData;
-import ca.coursePlanner.model.Offering;
 import ca.coursePlanner.model.Semester;
 
 public class ApiOfferingDataWrapper {
