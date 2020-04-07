@@ -16,6 +16,10 @@ public class CourseController {
     private AtomicLong nextDepartmentId = new AtomicLong();
     private AtomicLong nextOfferingId = new AtomicLong();
 
+    public void addDepartment(Department department) {
+        departments.add(department);
+    }
+
     @GetMapping("/api/departments")
     public ArrayList<ApiDepartmentWrapper> getDepartments(){
         ArrayList<ApiDepartmentWrapper> result = new ArrayList<>();
