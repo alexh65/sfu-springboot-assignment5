@@ -86,21 +86,25 @@ public class CourseController {
         throw new NullPointerException();
     }
 
-//    @PostMapping("/api/addoffering")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public void addNewSection(@RequestBody ApiOfferingDataWrapper wrapper) {
-//
-//        String[] instructors = wrapper.instructor.split(",");
-//        Offering offering = new Offering(nextOfferingId.incrementAndGet(), wrapper.semester, wrapper.location,
-//                wrapper.enrollmentCap, wrapper.component, wrapper.enrollmentTotal, instructors, wrapper.instructor);
-//
-//        Course course = new Course(nextCourseId.incrementAndGet(), wrapper.catalogNumber);
+    @PostMapping("/api/addoffering")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addNewSection(@RequestBody ApiOfferingDataWrapper wrapper) {
+        String[] instructors = wrapper.instructor.split(",");
+        Offering offering = new Offering(nextOfferingId.incrementAndGet(), new Semester(wrapper.semester), wrapper.location,
+                wrapper.enrollmentCap, wrapper.component, wrapper.enrollmentTotal, instructors, wrapper.instructor);
+
+        System.out.println(offering);
+        Course course = new Course(nextCourseId.incrementAndGet(), wrapper.catalogNumber);
 //        course.addOffering(offering);
-//
-//        Department department = new Department(nextDepartmentId.incrementAndGet(), wrapper.subjectName);
-//        department.addCourse(course);
-//        departments.add(department);
-//    }
+
+        Department department = new Department(nextDepartmentId.incrementAndGet(), wrapper.subjectName);
+        department.addCourse(course);
+//        System.out.println(course);
+
+        departments.add(department);
+//        System.out.println(department);
+    }
+
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "The ID of the department does not exist")
     @ExceptionHandler(NullPointerException.class)
