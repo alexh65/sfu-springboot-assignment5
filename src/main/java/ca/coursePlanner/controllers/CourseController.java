@@ -1,22 +1,20 @@
 package ca.coursePlanner.controllers;
 
-import ca.coursePlanner.model.CSVParser;
-import ca.coursePlanner.model.Course;
-import ca.coursePlanner.model.Department;
-import ca.coursePlanner.model.Offering;
-import ca.coursePlanner.wrappers.ApiCourseOfferingWrapper;
-import ca.coursePlanner.wrappers.ApiCourseWrapper;
-import ca.coursePlanner.wrappers.ApiDepartmentWrapper;
-import ca.coursePlanner.wrappers.ApiOfferingSectionWrapper;
+import ca.coursePlanner.model.*;
+import ca.coursePlanner.wrappers.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 public class CourseController {
-    CSVParser csvParser = new CSVParser();
-    ArrayList<Department> departments = csvParser.getDepartments();
+    private CSVParser csvParser = new CSVParser();
+    private ArrayList<Department> departments = csvParser.getDepartments();
+    private AtomicLong nextCourseId = new AtomicLong();
+    private AtomicLong nextDepartmentId = new AtomicLong();
+    private AtomicLong nextOfferingId = new AtomicLong();
 
     @GetMapping("/api/departments")
     public ArrayList<ApiDepartmentWrapper> getDepartments(){
@@ -82,6 +80,22 @@ public class CourseController {
             }
         }
         throw new NullPointerException();
+    }
+
+    @PostMapping("/api/addoffering")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addNewSection(@RequestBody ApiOfferingDataWrapper wrapper) {
+
+        String[] instructors = wrapper.instructor.split(",");
+        Offering offering = new Offering(nextOfferingId.incrementAndGet(), wrapper.semester, wrapper.location,
+                wrapper.enrollmentCap, wrapper.component, wrapper.enrollmentTotal, instructors, wrapper.instructor);
+
+        Course course = new Course(nextCourseId.incrementAndGet(), wrapper.catalogNumber);
+        course.addOffering(offering);
+
+        Department department = new Department(nextDepartmentId.incrementAndGet(), wrapper.subjectName);
+        department.addCourse(course);
+        departments.add(department);
     }
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "The ID of the department does not exist")
