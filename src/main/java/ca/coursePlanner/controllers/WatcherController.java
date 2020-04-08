@@ -35,6 +35,7 @@ public class WatcherController {
     }
 
     @PostMapping("/api/watchers")
+    @ResponseStatus(HttpStatus.CREATED)
     public void addWatcher(@RequestBody int deptId, @RequestBody int courseId){
         Department department = departments.get(deptId);
         Course course = department.getCourses().get(courseId);
@@ -60,6 +61,7 @@ public class WatcherController {
     }
 
     @DeleteMapping("/api/watchers/{watcherId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteWatcher(@PathVariable("watcherId") long watcherId) {
         for (int i = 0; i < watchers.size(); i++) {
             ApiWatcherWrapper watcher = watchers.get(i);
