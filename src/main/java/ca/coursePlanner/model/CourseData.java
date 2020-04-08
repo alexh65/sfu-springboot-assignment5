@@ -41,16 +41,16 @@ public class CourseData implements Comparable{
         return "Type=" + componentCode + ", Enrollment=" + enrollmentTotal + "/" + enrollmentCapacity;
     }
 
+    public String getCatalogNumber() {
+        return catalogNumber;
+    }
+
     public Semester getSemester() {
         return semester;
     }
 
     public String getSubject() {
         return subject;
-    }
-
-    public String getCatalogNumber() {
-        return catalogNumber;
     }
 
     public String getLocation() {
