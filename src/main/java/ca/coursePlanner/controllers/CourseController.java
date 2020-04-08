@@ -108,4 +108,8 @@ public class CourseController {
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "The ID of the offering does not exist")
     @ExceptionHandler(IllegalStateException.class)
     public void offeringIdNotFoundExceptionHandler(){}
+
+    public ArrayList<Department> getDepartmentList() {
+        return departments;
+    }
 }
