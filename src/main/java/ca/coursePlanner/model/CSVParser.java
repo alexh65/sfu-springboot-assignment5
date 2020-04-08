@@ -78,16 +78,16 @@ public class CSVParser {
         String subject = splitLine[1].trim();
         String catalogNumber = splitLine[2].trim();
         String location = splitLine[3].trim();
-        int enrollmentCapacity = Integer.parseInt(splitLine[4]);
+        int enrollmentCap = Integer.parseInt(splitLine[4]);
         int enrollmentTotal = Integer.parseInt(splitLine[5]);
         String[] instructors = separateInstructors(splitLine[6].trim());
         String componentCode = splitLine[7].trim();
 
-        addToObjects(new Offering(offeringId.getAndIncrement(), semester, location, enrollmentCapacity,
-                componentCode, enrollmentTotal, instructors, splitLine[6].trim()), subject, catalogNumber);
+        addToObjects(semester, location, enrollmentCap,
+                componentCode, enrollmentTotal, instructors, splitLine[6].trim(), subject, catalogNumber);
 
         //For dump-model
-        CourseData courseData = new CourseData(semester, subject, catalogNumber, location, enrollmentCapacity,
+        CourseData courseData = new CourseData(semester, subject, catalogNumber, location, enrollmentCap,
                 enrollmentTotal, instructors, componentCode);
 
         if (courses.containsKey(subject)) {
@@ -100,7 +100,10 @@ public class CSVParser {
 
     }
 
-    public void addToObjects(Offering offering, String subject, String catalogNumber) {
+    public void addToObjects(Semester semester, String location, int enrollmentCap,
+                             String componentCode, int enrollmentTotal, String[] instructors, String instructorString,
+                             String subject, String catalogNumber) {
+        //TODO: should refactor using the template method design pattern
         Department department = null;
         if (!hasSubject(subject)){
             department = new Department(departmentId.getAndIncrement(), subject);
@@ -121,7 +124,13 @@ public class CSVParser {
         } else {
             course = department.getCourseByCatalogNumber(catalogNumber);
         }
-        course.addOffering(offering);
+
+        Offering offering = course.getOffering(semester, instructorString);
+        if(offering == null) {
+            offering = new Offering(offeringId.getAndIncrement(), semester, location, instructors, instructorString);
+            course.addOffering(offering);
+        }
+        offering.addSection(componentCode, enrollmentCap, enrollmentTotal);
     }
 
     private boolean hasSubject(String subject) {
@@ -143,7 +152,7 @@ public class CSVParser {
         return -1;
     }
 
-    private String[] separateInstructors(String instructors) {
+    public String[] separateInstructors(String instructors) {
         if(instructors.equals("<null>")){
             return new String[]{""};
         }

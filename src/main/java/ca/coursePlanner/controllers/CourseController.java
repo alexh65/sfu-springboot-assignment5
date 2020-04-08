@@ -67,7 +67,10 @@ public class CourseController {
         ArrayList<Offering> offerings = course.getOfferings();
         for(Offering o : offerings){
             if (o.getCourseOfferingId() == offeringId) {
-                result.add(ApiOfferingSectionWrapper.getOfferingSectionWrapper(o));
+                ArrayList<Section> sections = o.getSections();
+                for(Section s: sections){
+                    result.add(ApiOfferingSectionWrapper.getOfferingSectionWrapper(s));
+                }
             }
         }
         //if none of the offers has the offering id
@@ -89,11 +92,9 @@ public class CourseController {
     @PostMapping("/api/addoffering")
     @ResponseStatus(HttpStatus.CREATED)
     public void addNewSection(@RequestBody ApiOfferingDataWrapper wrapper) {
-        String[] instructors = wrapper.instructor.split(",");
-        Offering offering = new Offering(nextOfferingId.incrementAndGet(), new Semester(wrapper.semester), wrapper.location,
-                wrapper.enrollmentCap, wrapper.component, wrapper.enrollmentTotal, instructors, wrapper.instructor);
-
-        csvParser.addToObjects(offering, wrapper.subjectName, wrapper.catalogNumber);
+        csvParser.addToObjects(new Semester(wrapper.semester), wrapper.location, wrapper.enrollmentCap, wrapper.component,
+                wrapper.enrollmentTotal, csvParser.separateInstructors(wrapper.instructor), wrapper.instructor,
+                wrapper.subjectName, wrapper.catalogNumber);
     }
 
 

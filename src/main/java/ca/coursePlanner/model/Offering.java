@@ -1,25 +1,22 @@
 package ca.coursePlanner.model;
 
+import java.util.ArrayList;
+
 public class Offering {
     private long courseOfferingId;
     private Semester semester;
     private String location;
-    private int enrollmentCap;
-    private String component;
-    private int enrollmentTotal;
     private String[] instructor;
     private String instructorString;
+    private ArrayList<Section> sections;
 
-    public Offering(long courseOfferingId, Semester semester, String location, int enrollmentCap, String component,
-                    int enrollmentTotal, String[] instructor, String instructorString) {
+    public Offering(long courseOfferingId, Semester semester, String location, String[] instructor, String instructorString) {
         this.courseOfferingId = courseOfferingId;
         this.semester = semester;
         this.location = location;
-        this.enrollmentCap = enrollmentCap;
-        this.component = component;
-        this.enrollmentTotal = enrollmentTotal;
         this.instructor = instructor;
         this.instructorString = instructorString;
+        this.sections = new ArrayList<>();
     }
 
     public Semester getSemester() {
@@ -30,22 +27,15 @@ public class Offering {
         return location;
     }
 
-    public int getEnrollmentCap() {
-        return enrollmentCap;
-    }
-
-    public String getComponent() {
-        return component;
-    }
-
-    public int getEnrollmentTotal() {
-        return enrollmentTotal;
-    }
-
     public String getInstructorInString(){
         return instructorString;
     }
-
+    public void addSection(String type, int enrollmentCap, int enrollmentTotal){
+        sections.add(new Section(type, enrollmentCap, enrollmentTotal));
+    }
+    public ArrayList<Section> getSections(){
+        return sections;
+    }
     public long getCourseOfferingId() {
         return courseOfferingId;
     }

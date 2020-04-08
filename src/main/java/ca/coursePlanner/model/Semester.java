@@ -35,6 +35,9 @@ public class Semester {
         return term;
     }
 
+    public boolean equals(Semester semester){
+        return semester.semesterCode == this.semesterCode;
+    }
     @Override
     public String toString() {
         return "" + semesterCode;
