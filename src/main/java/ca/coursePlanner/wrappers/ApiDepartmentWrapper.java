@@ -1,5 +1,7 @@
 package ca.coursePlanner.wrappers;
 
+import ca.coursePlanner.Observer.Observer;
+
 public class ApiDepartmentWrapper {
     public long deptId;
     public String name;
@@ -10,5 +12,4 @@ public class ApiDepartmentWrapper {
         result.name = name;
         return result;
     }
-
 }

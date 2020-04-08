@@ -4,19 +4,22 @@ import ca.coursePlanner.model.CSVParser;
 import ca.coursePlanner.model.Course;
 import ca.coursePlanner.model.Department;
 import ca.coursePlanner.model.Offering;
-import ca.coursePlanner.wrappers.ApiCourseOfferingWrapper;
-import ca.coursePlanner.wrappers.ApiCourseWrapper;
-import ca.coursePlanner.wrappers.ApiDepartmentWrapper;
-import ca.coursePlanner.wrappers.ApiOfferingSectionWrapper;
+import ca.coursePlanner.wrappers.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 public class CourseController {
     CSVParser csvParser = new CSVParser();
     ArrayList<Department> departments = csvParser.getDepartments();
+
+    public ArrayList<Department> getDepartmentList() {
+        return departments;
+    }
 
     @GetMapping("/api/departments")
     public ArrayList<ApiDepartmentWrapper> getDepartments(){
