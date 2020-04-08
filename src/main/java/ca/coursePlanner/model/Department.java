@@ -23,18 +23,28 @@ public class Department implements Comparable<Department>{
     }
 
     public Course getCourseByCatalogNumber(String catalogNumber) {
-        for(int i = 0; i < courses.size(); i++){
-            if(courses.get(i).getCatalogNumber().equals(catalogNumber)){
-                return courses.get(i);
+        for (Course course : courses) {
+            if (course.getCatalogNumber().equals(catalogNumber)) {
+                return course;
             }
         }
         return null;
     }
 
+    public int findCourse(String catalog) {
+        for (int i = 0; i < courses.size(); i++) {
+            String existed = courses.get(i).getCatalogNumber();
+            if (existed.equals(catalog)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public Course getCourseById(long id) {
-        for(int i = 0; i < courses.size(); i++){
-            if(courses.get(i).getId() == id){
-                return courses.get(i);
+        for (Course course : courses) {
+            if (course.getId() == id) {
+                return course;
             }
         }
         return null;
@@ -49,7 +59,7 @@ public class Department implements Comparable<Department>{
     }
 
     public boolean hasCourse(String course){
-        for(Course c: courses){
+        for(Course c : courses){
             String existed = c.getCatalogNumber();
             if (existed.equals(course)){
                 return true;

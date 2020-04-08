@@ -1,8 +1,9 @@
 package ca.coursePlanner.wrappers;
 
 import ca.coursePlanner.model.Offering;
+import org.jetbrains.annotations.NotNull;
 
-public class ApiCourseOfferingWrapper {
+public class ApiCourseOfferingWrapper implements Comparable{
     public long courseOfferingId;
     public String location;
     public String instructors;
@@ -19,5 +20,11 @@ public class ApiCourseOfferingWrapper {
         result.semesterCode = o.getSemester().getSemesterCode();
         result.year = o.getSemester().getYear();
         return result;
+    }
+
+    @Override
+    public int compareTo(@NotNull Object o) {
+        ApiCourseOfferingWrapper wrapper = (ApiCourseOfferingWrapper) o;
+        return Long.compare(this.semesterCode, wrapper.semesterCode);
     }
 }
