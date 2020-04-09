@@ -103,7 +103,6 @@ public class CSVParser {
     public void addToObjects(Semester semester, String location, int enrollmentCap,
                              String componentCode, int enrollmentTotal, String[] instructors, String instructorString,
                              String subject, String catalogNumber) {
-        //TODO: should refactor using the template method design pattern
         Department department = null;
         if (!hasSubject(subject)){
             department = new Department(departmentId.getAndIncrement(), subject);
