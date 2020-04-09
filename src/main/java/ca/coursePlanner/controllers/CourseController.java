@@ -77,7 +77,16 @@ public class CourseController {
         return result;
     }
 
-    private long findIndexOfDepartment(long id){
+    public Department findDepartment(long id){
+        for (Department department : departments) {
+            if (department.getId() == id) {
+                return department;
+            }
+        }
+        throw new NullPointerException();
+    }
+
+    public long findIndexOfDepartment(long id){
         for (int i = 0; i < departments.size(); i++) {
             if(departments.get(i).getId() == id){
                 return i;

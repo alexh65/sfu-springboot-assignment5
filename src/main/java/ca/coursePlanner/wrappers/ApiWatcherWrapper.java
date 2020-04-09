@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-public class ApiWatcherWrapper implements Observer {
+public class ApiWatcherWrapper {
     public long id;
     public ApiDepartmentWrapper department;
     public ApiCourseWrapper course;
@@ -19,14 +19,6 @@ public class ApiWatcherWrapper implements Observer {
         result.events = events;
 
         return result;
-    }
-
-    @Override
-    public void stateChanged(ApiWatcherWrapper watcher) {
-        this.id = watcher.id;
-        this.department = watcher.department;
-        this.course = watcher.course;
-        this.events = watcher.events;
     }
 
     @Override

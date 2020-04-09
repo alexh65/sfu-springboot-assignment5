@@ -1,10 +1,12 @@
 package ca.coursePlanner.controllers;
 
+import ca.coursePlanner.Observer.Observer;
 import ca.coursePlanner.model.Course;
 import ca.coursePlanner.model.Department;
 import ca.coursePlanner.wrappers.ApiCourseWrapper;
 import ca.coursePlanner.wrappers.ApiDepartmentWrapper;
 import ca.coursePlanner.wrappers.ApiWatcherWrapper;
+import ca.coursePlanner.wrappers.ApiWatcherWrapperHelper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,9 +19,9 @@ import java.util.concurrent.atomic.AtomicLong;
 @RestController
 public class WatcherController {
     ArrayList<ApiWatcherWrapper> watchers = new ArrayList<>();
+    ArrayList<Observer> observers = new ArrayList<>();
     AtomicLong watcherId = new AtomicLong();
     CourseController courseController = new CourseController();
-    ArrayList<Department> departments = courseController.getDepartmentList();
 
     @GetMapping("/api/watchers")
     public ArrayList<ApiWatcherWrapper> listWatchers(){
@@ -36,9 +38,9 @@ public class WatcherController {
 
     @PostMapping("/api/watchers")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addWatcher(@RequestBody int deptId, @RequestBody int courseId){
-        Department department = departments.get(deptId);
-        Course course = department.getCourses().get(courseId);
+    public void addWatcher(@RequestBody ApiWatcherWrapperHelper wrapperId){
+        Department department = courseController.findDepartment(wrapperId.deptId);
+        Course course = department.getCourseById(wrapperId.courseId);
         List<String> events = new ArrayList<>();
         events.add(getDate());
 
@@ -46,8 +48,7 @@ public class WatcherController {
                 ApiDepartmentWrapper.makeNewWrapper(department.getId(), department.getName()),
                 ApiCourseWrapper.makeNewWrapper(course.getId(), course.getCatalogNumber()), events);
         watchers.add(wrapper);
-        System.out.println("At end, list is:");
-        System.out.println(watchers);
+        notifyObservers();
     }
 
     @GetMapping("/api/watchers/{watcherId}")
@@ -67,9 +68,16 @@ public class WatcherController {
             ApiWatcherWrapper watcher = watchers.get(i);
             if (watcher.id == watcherId) {
                 watchers.remove(i);
+                notifyObservers();
             }
         }
         throw new IllegalStateException();
+    }
+
+    private void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.stateChanged();
+        }
     }
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "The ID of the watcher does not exist")
