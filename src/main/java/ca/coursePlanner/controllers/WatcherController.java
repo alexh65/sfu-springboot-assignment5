@@ -31,8 +31,6 @@ public class WatcherController {
     public void addWatcher(@RequestBody ApiWatcherWrapperHelper wrapperId){
         Department department = courseController.findDepartment(wrapperId.deptId);
         Course course = department.getCourseById(wrapperId.courseId);
-        List<String> events = new ArrayList<>();
-//        events.add(getDate());
 
         ApiWatcherWrapper wrapper = ApiWatcherWrapper.makeWatcherWrapper(watcherId.getAndIncrement(),
                 ApiDepartmentWrapper.makeNewWrapper(department.getId(), department.getName()),
@@ -73,10 +71,6 @@ public class WatcherController {
         for (Observer observer : observers) {
             observer.stateChanged(event);
         }
-    }
-
-    public void addObserver(Observer observer) {
-        observers.add(observer);
     }
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "The ID of the watcher does not exist")

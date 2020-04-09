@@ -1,6 +1,4 @@
 package ca.coursePlanner.wrappers;
-import ca.coursePlanner.Observer.Observer;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;

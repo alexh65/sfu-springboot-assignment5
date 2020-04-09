@@ -1,7 +1,6 @@
 package ca.coursePlanner.model;
 
 import ca.coursePlanner.Observer.Observer;
-import ca.coursePlanner.wrappers.ApiWatcherWrapper;
 
 import java.util.ArrayList;
 

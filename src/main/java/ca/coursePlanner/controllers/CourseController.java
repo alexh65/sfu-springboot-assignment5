@@ -14,8 +14,6 @@ import java.util.concurrent.atomic.AtomicLong;
 public class CourseController {
     private CSVParser csvParser = new CSVParser();
     private ArrayList<Department> departments = csvParser.getDepartments();
-    private AtomicLong nextCourseId = new AtomicLong();
-    private AtomicLong nextDepartmentId = new AtomicLong();
     private AtomicLong nextOfferingId = new AtomicLong();
     private WatcherController watcherController = new WatcherController();
 
