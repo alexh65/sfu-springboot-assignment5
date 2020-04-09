@@ -103,10 +103,9 @@ public class CourseController {
     public void addNewSection(@RequestBody ApiOfferingDataWrapper wrapper) {
         String[] instructors = wrapper.instructor.split(",");
         Semester semester = new Semester(wrapper.semester);
-        Offering offering = new Offering(nextOfferingId.incrementAndGet(), semester, wrapper.location,
-                wrapper.enrollmentCap, wrapper.component, wrapper.enrollmentTotal, instructors, wrapper.instructor);
 
-        csvParser.addToObjects(offering, wrapper.subjectName, wrapper.catalogNumber);
+        csvParser.addToObjects(semester, wrapper.location, wrapper.enrollmentCap, wrapper.component, wrapper.enrollmentTotal,
+                instructors, wrapper.instructor, wrapper.subjectName, wrapper.catalogNumber);
 
         String event = getDate() + " Added section " + wrapper.component + " with enrollment (" +
                 wrapper.enrollmentTotal + " / " + wrapper.enrollmentCap + " to offering " + semester.getTerm() +
