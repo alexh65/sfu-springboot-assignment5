@@ -67,7 +67,10 @@ public class CourseController {
         ArrayList<Offering> offerings = course.getOfferings();
         for(Offering o : offerings){
             if (o.getCourseOfferingId() == offeringId) {
-                result.add(ApiOfferingSectionWrapper.getOfferingSectionWrapper(o));
+                ArrayList<Section> sections = o.getSections();
+                for(Section s: sections){
+                    result.add(ApiOfferingSectionWrapper.getOfferingSectionWrapper(s));
+                }
             }
         }
         //if none of the offers has the offering id

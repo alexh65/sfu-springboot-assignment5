@@ -15,7 +15,11 @@ public class ApiCourseOfferingWrapper implements Comparable{
         ApiCourseOfferingWrapper result = new ApiCourseOfferingWrapper();
         result.courseOfferingId = o.getCourseOfferingId();
         result.location = o.getLocation();
-        result.instructors = o.getInstructorInString();
+        if (o.getInstructorInString().equals("<null>")) {
+            result.instructors = "";
+        } else {
+            result.instructors = o.getInstructorInString();
+        }
         result.term = o.getSemester().getTerm();
         result.semesterCode = o.getSemester().getSemesterCode();
         result.year = o.getSemester().getYear();
