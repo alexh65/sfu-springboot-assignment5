@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
@@ -36,13 +35,9 @@ public class WatcherController {
                 ApiDepartmentWrapper.makeNewWrapper(department.getId(), department.getName()),
                 ApiCourseWrapper.makeNewWrapper(course.getId(), course.getCatalogNumber()));
         watchers.add(wrapper);
-        course.addObserver(new Observer() {
-            @Override
-            public void stateChanged(String event) {
-                wrapper.addEvents(event);
-            }
+        course.addObserver(event -> {
+            wrapper.addEvents(event);
         });
-
     }
 
     @GetMapping("/api/watchers/{watcherId}")

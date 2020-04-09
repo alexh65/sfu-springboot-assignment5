@@ -15,7 +15,6 @@ public class CourseController {
     private CSVParser csvParser = new CSVParser();
     private ArrayList<Department> departments = csvParser.getDepartments();
     private AtomicLong nextOfferingId = new AtomicLong();
-    private WatcherController watcherController = new WatcherController();
 
     public void addDepartment(Department department) {
         departments.add(department);
@@ -110,6 +109,7 @@ public class CourseController {
                 wrapper.enrollmentTotal + " / " + wrapper.enrollmentCap + " to offering " + semester.getTerm() +
                 semester.getYear();
 
+        WatcherController watcherController = new WatcherController();
         watcherController.notifyObservers(event);
     }
 

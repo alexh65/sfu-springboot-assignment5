@@ -8,7 +8,7 @@ public class Course implements Comparable<Course>{
     private long id;
     private String catalogNumber;
     private ArrayList<Offering> offerings;
-    private ArrayList<Observer> observers = new ArrayList<>();
+    public ArrayList<Observer> observers = new ArrayList<>();
 
     public Course(long id, String catalogNumber) {
         this.id = id;
@@ -17,6 +17,7 @@ public class Course implements Comparable<Course>{
     }
 
     public void addObserver(Observer observer) {
+        System.out.println("in add observer");
         observers.add(observer);
     }
 
