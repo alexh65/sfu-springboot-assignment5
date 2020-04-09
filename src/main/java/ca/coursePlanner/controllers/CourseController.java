@@ -1,10 +1,12 @@
 package ca.coursePlanner.controllers;
 
+import ca.coursePlanner.Observer.Observer;
 import ca.coursePlanner.model.*;
 import ca.coursePlanner.wrappers.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -15,6 +17,7 @@ public class CourseController {
     private AtomicLong nextCourseId = new AtomicLong();
     private AtomicLong nextDepartmentId = new AtomicLong();
     private AtomicLong nextOfferingId = new AtomicLong();
+    private WatcherController watcherController = new WatcherController();
 
     public void addDepartment(Department department) {
         departments.add(department);
@@ -99,12 +102,27 @@ public class CourseController {
     @ResponseStatus(HttpStatus.CREATED)
     public void addNewSection(@RequestBody ApiOfferingDataWrapper wrapper) {
         String[] instructors = wrapper.instructor.split(",");
-        Offering offering = new Offering(nextOfferingId.incrementAndGet(), new Semester(wrapper.semester), wrapper.location,
+        Semester semester = new Semester(wrapper.semester);
+        Offering offering = new Offering(nextOfferingId.incrementAndGet(), semester, wrapper.location,
                 wrapper.enrollmentCap, wrapper.component, wrapper.enrollmentTotal, instructors, wrapper.instructor);
 
         csvParser.addToObjects(offering, wrapper.subjectName, wrapper.catalogNumber);
+
+        String event = getDate() + " Added section " + wrapper.component + " with enrollment (" +
+                wrapper.enrollmentTotal + " / " + wrapper.enrollmentCap + " to offering " + semester.getTerm() +
+                semester.getYear();
+
+        watcherController.notifyObservers(event);
     }
 
+
+    //Date Tutorial: https://beginnersbook.com/2013/05/current-date-time-in-java/
+    private String getDate() {
+        SimpleDateFormat formatter= new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+        Date date = new Date(System.currentTimeMillis());
+        String time = formatter.format(date);
+        return time.replaceAll("\\.", "");
+    }
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "The ID of the department does not exist")
     @ExceptionHandler(NullPointerException.class)
@@ -117,8 +135,4 @@ public class CourseController {
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "The ID of the offering does not exist")
     @ExceptionHandler(IllegalStateException.class)
     public void offeringIdNotFoundExceptionHandler(){}
-
-    public ArrayList<Department> getDepartmentList() {
-        return departments;
-    }
 }

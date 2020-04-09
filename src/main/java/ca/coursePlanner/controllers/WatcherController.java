@@ -10,9 +10,7 @@ import ca.coursePlanner.wrappers.ApiWatcherWrapperHelper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -28,27 +26,25 @@ public class WatcherController {
         return watchers;
     }
 
-    //Date Tutorial: https://beginnersbook.com/2013/05/current-date-time-in-java/
-    private String getDate() {
-        SimpleDateFormat formatter= new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-        Date date = new Date(System.currentTimeMillis());
-        String time = formatter.format(date);
-        return time.replaceAll("\\.", "");
-    }
-
     @PostMapping("/api/watchers")
     @ResponseStatus(HttpStatus.CREATED)
     public void addWatcher(@RequestBody ApiWatcherWrapperHelper wrapperId){
         Department department = courseController.findDepartment(wrapperId.deptId);
         Course course = department.getCourseById(wrapperId.courseId);
         List<String> events = new ArrayList<>();
-        events.add(getDate());
+//        events.add(getDate());
 
         ApiWatcherWrapper wrapper = ApiWatcherWrapper.makeWatcherWrapper(watcherId.getAndIncrement(),
                 ApiDepartmentWrapper.makeNewWrapper(department.getId(), department.getName()),
-                ApiCourseWrapper.makeNewWrapper(course.getId(), course.getCatalogNumber()), events);
+                ApiCourseWrapper.makeNewWrapper(course.getId(), course.getCatalogNumber()));
         watchers.add(wrapper);
-        notifyObservers();
+        course.addObserver(new Observer() {
+            @Override
+            public void stateChanged(String event) {
+                wrapper.addEvents(event);
+            }
+        });
+
     }
 
     @GetMapping("/api/watchers/{watcherId}")
@@ -68,16 +64,19 @@ public class WatcherController {
             ApiWatcherWrapper watcher = watchers.get(i);
             if (watcher.id == watcherId) {
                 watchers.remove(i);
-                notifyObservers();
             }
         }
         throw new IllegalStateException();
     }
 
-    private void notifyObservers() {
+    public void notifyObservers(String event) {
         for (Observer observer : observers) {
-            observer.stateChanged();
+            observer.stateChanged(event);
         }
+    }
+
+    public void addObserver(Observer observer) {
+        observers.add(observer);
     }
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "The ID of the watcher does not exist")
